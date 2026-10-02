@@ -1,9 +1,11 @@
-# Private workout source
+# Workout sources
 
-Make this repository **private before adding personal files here**. A sign-in page cannot hide a CSV committed to a public repository, and deleting it later does not remove git history.
+Upload app CSV exports here or replace `workouts.csv`. A commit on main automatically runs **Analyze workouts** and republishes Pages. To rebuild manually: **Actions → Analyze workouts → Run workflow**.
 
-Upload one or more app-export CSV files here, then run **Actions → Analyze workouts → Run workflow**. Overlapping exports are deduplicated by workout start, exercise, set index, set type and recorded metrics. These fields must identify unique sets. Prefer one complete export when possible.
+Edit `profile.txt` for weight and height. Each changed profile is archived in `history/profile_history.json` by the workflow and committed to main. Add new weigh-in lines to preserve a current timeline; past archived versions remain available.
 
-Use the provided export columns: `title,start_time,end_time,description,exercise_title,superset_id,exercise_notes,set_index,set_type,weight_lbs,reps,distance_miles,duration_seconds,rpe`. Dates use `Sep 30, 2026, 8:06 PM`. Empty rows are skipped; invalid nonempty rows fail with a row number.
+CSV columns: `title,start_time,end_time,description,exercise_title,superset_id,exercise_notes,set_index,set_type,weight_lbs,reps,distance_miles,duration_seconds,rpe`. Dates use `Sep 30, 2026, 8:06 PM`. Empty rows are skipped; invalid nonempty rows fail with a row number. Matching set identifiers **and recorded metrics** are deduplicated.
 
-Optional `muscle_overrides.json` maps exact exercise names to Chest, Back, Shoulders, Biceps, Triceps, Forearms, Quads, Hamstrings, Glutes, Calves or Core. Example: `{"Hip Adduction (Machine)":"Quads"}`. Mapping is a simplified primary-muscle attribution, not anatomical measurement.
+Optional `muscle_overrides.json` maps exact exercise names to Chest, Back, Shoulders, Biceps, Triceps, Forearms, Quads, Hamstrings, Glutes, Calves or Core.
+
+These files and the dashboard are currently public.

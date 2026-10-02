@@ -1,28 +1,10 @@
-name: Deploy dashboard interface
+name: Dashboard deployment info
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths: ['web/**', '.github/workflows/pages.yml']
 permissions:
   contents: read
-  pages: write
-  id-token: write
-concurrency:
-  group: pages
-  cancel-in-progress: false
 jobs:
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  info:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/configure-pages@v5
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: web
-      - name: Deploy interface only
-        id: deployment
-        uses: actions/deploy-pages@v4
+      - run: echo 'Run the Analyze workouts workflow to rebuild data and deploy GitHub Pages.'

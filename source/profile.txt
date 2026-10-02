@@ -1,0 +1,5 @@
+# FORM profile — edit this file, then run Actions → Analyze workouts.
+# Height is inches. Add weigh_in lines as YYYY-MM-DD,weight,lb (or kg).
+# Reusing a date updates that date. Previous file versions are archived by the program.
+height_inches=69
+weigh_in=2026-10-01,165,lb

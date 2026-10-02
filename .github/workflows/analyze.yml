@@ -1,45 +1,47 @@
 name: Analyze workouts
 on:
   workflow_dispatch:
-    inputs:
-      publish:
-        description: Publish to configured private Supabase account
-        type: boolean
-        default: false
+  push:
+    branches: [main]
+    paths: ['source/**', 'analyzer/**', 'web/**', 'tests/**', '.github/workflows/analyze.yml']
 permissions:
-  contents: read
+  contents: write
+  pages: write
+  id-token: write
+concurrency:
+  group: workout-pages
+  cancel-in-progress: false
 jobs:
   analyze:
     runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Require a private repository for personal source data
-        env:
-          REPOSITORY_PRIVATE: ${{ github.event.repository.private }}
-        run: |
-          if [ "$REPOSITORY_PRIVATE" != "true" ]; then
-            echo 'Make this repository private before committing personal exports to source/. Public git history exposes your files.'
-            exit 1
-          fi
-      - name: Run analysis tests
+      - name: Test analysis
         run: python -m unittest discover -s tests -v
-      - name: Analyze and optionally publish
-        env:
-          PUBLISH: ${{ inputs.publish }}
-          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
-          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
-          WORKOUT_OWNER_ID: ${{ secrets.WORKOUT_OWNER_ID }}
+      - name: Build dashboard and preserve profile versions
+        run: python analyzer/build_site.py
+      - name: Save profile history back to main
         run: |
-          if [ "$PUBLISH" = "true" ]; then
-            python analyzer/analyze.py --publish
-          else
-            python analyzer/analyze.py
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add source/history/profile_history.json
+          if ! git diff --cached --quiet; then
+            git commit -m 'Archive workout profile revision [skip ci]'
+            git pull --rebase origin main
+            git push origin HEAD:main
           fi
-      - uses: actions/upload-artifact@v4
+      - uses: actions/configure-pages@v5
         with:
-          name: private-workout-report
-          path: private-output/report.json
-          retention-days: 7
+          enablement: true
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: web
+      - name: Publish workout dashboard
+        id: deployment
+        uses: actions/deploy-pages@v4

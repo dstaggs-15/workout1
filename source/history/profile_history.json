@@ -1,0 +1,18 @@
+[
+  {
+    "saved_at": "2026-10-02T20:12:23.374878+00:00",
+    "sha256": "f70ad96b262e57870cf228bdab3dfeac0a3a99556b13e7821a8ed7a2bc2571ee",
+    "text": "# FORM profile \u2014 edit this file, then run Actions \u2192 Analyze workouts.\n# Height is inches. Add weigh_in lines as YYYY-MM-DD,weight,lb (or kg).\n# Reusing a date updates that date. Previous file versions are archived by the program.\nheight_inches=69\nweigh_in=2026-10-01,165,lb\n",
+    "profile": {
+      "height_inches": 69.0,
+      "weights": [
+        {
+          "date": "2026-10-01",
+          "weight_lb": 165.0,
+          "note": "Source profile",
+          "source": "profile"
+        }
+      ]
+    }
+  }
+]
