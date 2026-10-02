@@ -18,6 +18,9 @@ class AnalysisTests(unittest.TestCase):
   r=self.run_report([a,b]);self.assertEqual(r['weekly'][1]['sets'],0);self.assertEqual(r['sets'][1]['volume'],0);self.assertIsNone(r['sets'][1]['e1rm'])
  def test_invalid_number_fails(self):
   with self.assertRaises(ValueError):self.run_report([dict(self.row(),weight_lbs='NaN')])
+ def test_repeated_identifiers_with_different_metrics_preserved(self):
+  a=self.row();b=dict(a,weight_lbs="105");r=self.run_report([a,b],2)
+  self.assertEqual(r["summary"]["sets"],2);self.assertEqual(r["quality"]["duplicate_sets_skipped"],2)
  def test_bodyweight_no_strength_estimate(self):
   r=self.run_report([dict(self.row(),exercise_title='Push Up',weight_lbs='')]);self.assertEqual(r['summary']['sets'],1);self.assertIsNone(r['sets'][0]['e1rm'])
 if __name__=='__main__':unittest.main()

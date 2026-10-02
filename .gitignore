@@ -2,3 +2,5 @@ private-output/
 .env
 __pycache__/
 *.pyc
+web/report.json
+web/profile.json
