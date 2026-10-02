@@ -1,0 +1,4 @@
+private-output/
+.env
+__pycache__/
+*.pyc
